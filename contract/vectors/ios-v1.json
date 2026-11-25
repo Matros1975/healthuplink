@@ -1,0 +1,16 @@
+{
+  "body_json" : "{\"body_version\":1,\"app\":{\"version\":\"1.0\",\"build\":\"12\",\"os\":\"26.1\",\"model\":\"iPhone16,1\",\"low_power\":false},\"abandoned_seq\":[],\"dead_letter_seq\":[],\"samples\":[{\"uuid\":\"3f2a8c1e-5b7d-4e9f-a1c3-2d4e6f801a2b\",\"type\":\"HKQuantityTypeIdentifierHeartRate\",\"kind\":\"quantity\",\"start\":\"2026-11-22T03:12:00Z\",\"end\":\"2026-11-22T03:12:00Z\",\"value\":52,\"unit\":\"count/min\",\"source\":{\"bundle\":\"com.apple.health.00000000-0000-4000-8000-0000000000A1\",\"name\":\"Apple Watch\",\"product_type\":\"Watch7,5\"},\"tz\":\"Europe/Amsterdam\",\"metadata\":{\"HKMetadataKeyHeartRateMotionContext\":1}},{\"uuid\":\"9b10d4f2-3c6a-4b8e-8f1d-7a5c3e2b1f09\",\"type\":\"HKCategoryTypeIdentifierSleepAnalysis\",\"kind\":\"category\",\"start\":\"2026-11-22T01:40:00Z\",\"end\":\"2026-11-22T02:05:00Z\",\"value\":5,\"value_label\":\"asleepREM\",\"source\":{\"bundle\":\"com.apple.health.00000000-0000-4000-8000-0000000000A1\",\"name\":\"Apple Watch\"}}]}",
+  "device_pk" : "e7f162a10bec559afea195e4dce84b69568d5d2cb0963eb446c0685e2b17f2f0",
+  "envelope" : {
+    "batch_id" : "01935f2e-7a10-7c3b-8d4e-5f6a7b8c9d0e",
+    "ciphertext" : "otdkEMoTNlFrMwF6GlWcwpGiI6wKSG+DJcWTyjGklmxjAKeo6b7hwIeYlQR0v8tj3n7yypD7jn322KQWyL6jwSN0rDfgutEkUbtXVGI66asK2Qks5ZMCxBSn7/Ve2UIlEC+9+GnoZUtV879UKlomsTPNAVakluN0Iv8P0luGLFO6vjTXpWZ1uaji2JyQkM5/J+dT8EcaVlVhsuXrZuNVg5+qp5sgsKSlBQMgJJLUpW9etouNT5PG6Q91/WBzZep7TXelP3TtgJU43xGk48x+cMu5kQTO5o/acUGShujmN/bS3JMYtoeQ5Y2naKw380zI5u0DyaqSgPlyRwWigR55VBV/iRQeuaID+i+v/vR4X+2jqeWm32/NkrQMBiI2d6TjosT2mBApgKCSkrBfrX2C9lT+Pi9my+dZwqgp5aJnip1/xIGabRR/VGJStQleuyi9MvhdOkLV9f3rK1ADVdfqtRBb9um+wGXjeA6Z5EGY2pOC3uBE/25cJBiNRRolPYzIDj8S0qCMgpLPcvkPNvSFqubwJrz6CFcAqMY430JjfhnhLGrDqRCDp/yI66nvsLd4sH0Eof/0AVzbCPCuVPjkWtjQqiGXl0XNuobYP04QJqoLiS9QwLTyVVVeoeKQY7Tm",
+    "created_at" : "2026-11-22T07:30:12Z",
+    "device_id" : "6f1d2c3a-8b4e-4f5a-9c7d-0e1f2a3b4c5d",
+    "enc" : "XWc2Dpe3F26wmn4aMEFCnaYg8cmCl/e/OzEmqKCPDgE=",
+    "envelope_version" : 1,
+    "key_epoch" : 1,
+    "seq" : 7,
+    "sig" : "t6rT4ObE5CJEPnEMcHHxBbPZsyamy15WuAJv/KEhspiLIhsNENfNpcQnMFn5YnBzjozOcqneN2GYDco0m5pECg=="
+  },
+  "server_pk" : "07a37cbc142093c8b755dc1b10e86cb426374ad16aa853ed0bdfc0b2b86d1c7c"
+}

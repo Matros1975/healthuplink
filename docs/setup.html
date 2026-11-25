@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up a self-hosted Apple Health receiver – Health Uplink</title>
+<meta name="description" content="Set up the Health Uplink receiver with Docker or pipx, pair your iPhone by QR code and connect Claude Code over MCP. Steps for Tailscale and home-network HTTPS.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f2b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="canonical" href="https://healthuplink.front-side-solutions.com/setup.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Health Uplink">
+<meta property="og:title" content="Set up a self-hosted Apple Health receiver – Health Uplink">
+<meta property="og:description" content="Set up the Health Uplink receiver with Docker or pipx, pair your iPhone by QR code and connect Claude Code over MCP. Steps for Tailscale and home-network HTTPS.">
+<meta property="og:url" content="https://healthuplink.front-side-solutions.com/setup.html">
+<meta property="og:image" content="https://healthuplink.front-side-solutions.com/assets/social-1200x630.png">
+<meta property="og:image:alt" content="The Health Uplink app icon, a coral heart above a mint step on indigo, next to the name Health Uplink">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://healthuplink.front-side-solutions.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Setup",
+     "item": "https://healthuplink.front-side-solutions.com/setup.html"
+    }
+   ]
+  },
+  {
+   "@type": "TechArticle",
+   "headline": "Set up the Health Uplink receiver",
+   "description": "Set up the Health Uplink receiver with Docker or pipx, pair your iPhone by QR code and connect Claude Code over MCP. Steps for Tailscale and home-network HTTPS.",
+   "url": "https://healthuplink.front-side-solutions.com/setup.html",
+   "mainEntityOfPage": "https://healthuplink.front-side-solutions.com/setup.html",
+   "inLanguage": "en-US",
+   "dateModified": "2026-11-25",
+   "image": "https://healthuplink.front-side-solutions.com/assets/social-1200x630.png",
+   "author": {
+    "@type": "Organization",
+    "name": "Frontside Solutions B.V.",
+    "url": "https://front-side-solutions.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Frontside Solutions B.V.",
+    "url": "https://front-side-solutions.com/"
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="brand" href="index.html"><img src="assets/favicon.svg" width="32" height="32" alt="">Health Uplink</a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a href="setup.html" aria-current="page">Setup</a></li>
+<li><a href="agents.html">Agents</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="privacy.html">Privacy</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="wrap">
+<h1>Setup</h1>
+<p class="meta">Last updated 25 November 2026</p>
+<p class="lede">Run the receiver on a machine that stays on, pair your iPhone with a QR code, then connect an agent. This is the short version; the <a href="https://github.com/Matros1975/healthuplink#readme">README</a> has every option.</p>
+
+<h2 id="tailscale">With Tailscale (recommended)</h2>
+<p>Tailscale puts the server and the iPhone on one private network that WireGuard encrypts, so the receiver can use plain <code>http://</code> and it works away from home too.</p>
+<ol>
+<li>Install Tailscale on the server and on the iPhone and log in to the same account. Note the server's address from <code>tailscale ip -4</code> (it starts with <code>100.</code>). The iPhone app cannot use <code>*.ts.net</code> names.</li>
+<li>Get the files and create the settings:
+<pre><code>git clone https://github.com/Matros1975/healthuplink.git
+cd healthuplink
+cp .env.example .env</code></pre>
+In <code>.env</code>, with your own address and time zone:
+<pre><code>HU_PUBLISH_ADDR=100.100.1.1
+HU_PUBLIC_URL=http://100.100.1.1:8796
+HU_TLS=off
+HU_TZ=Europe/Berlin</code></pre></li>
+<li>Start the receiver and print a pairing code:
+<pre><code>docker compose up -d
+docker compose exec healthuplink healthuplink pair</code></pre></li>
+<li>In the iPhone app, tap Pair and scan the code. It works once and expires after 10 minutes.</li>
+</ol>
+<p><a href="https://github.com/Matros1975/healthuplink#quick-start-a-tailscale-recommended">Full steps in the README</a></p>
+
+<h2 id="home-network">On your home network with HTTPS</h2>
+<p>Without Tailscale, the receiver makes its own certificate and the QR code carries its fingerprint, so the phone talks only to this receiver. Use the server's LAN address (give it a fixed one in your router) or its <code>.local</code> name:</p>
+<pre><code>HU_PUBLISH_ADDR=192.168.1.10
+HU_PUBLIC_URL=https://192.168.1.10:8796
+HU_TLS=self-signed
+HU_TZ=Europe/Berlin</code></pre>
+<p>Start and pair as above. When you pair, the app asks for Local Network access; allow it. A receiver behind an internet name such as <code>health.example.com</code> needs a certificate from a public certificate authority instead.</p>
+<p><a href="https://github.com/Matros1975/healthuplink#quick-start-b-home-network-with-tls">Full steps in the README</a></p>
+
+<h2 id="without-docker">Without Docker</h2>
+<p>The receiver is also a Python package (Python 3.12 or newer):</p>
+<pre><code>pipx install healthuplink
+export HU_PUBLIC_URL=http://100.100.1.1:8796
+export HU_BIND=100.100.1.1:8796
+export HU_TZ=Europe/Berlin
+healthuplink serve</code></pre>
+<p>Pair from a second terminal with <code>healthuplink pair</code>. The README shows how to keep it running with a <code>systemd --user</code> unit.</p>
+<p><a href="https://github.com/Matros1975/healthuplink#quick-start-c-without-docker">Full steps in the README</a></p>
+
+<h2 id="agent">Connect an agent</h2>
+<p>Create a token for each agent; it is printed once.</p>
+<pre><code>docker compose exec healthuplink healthuplink tokens create --name claude-code</code></pre>
+<p>Then add the receiver to Claude Code, with the same address as <code>HU_PUBLIC_URL</code> and <code>/mcp</code> at the end:</p>
+<pre><code>claude mcp add --transport http healthuplink http://100.100.1.1:8796/mcp \
+  --header "Authorization: Bearer &lt;token&gt;"</code></pre>
+<p>Other MCP clients that support streamable HTTP with a bearer token work the same way. The tools are read-only; <a href="agents.html">For AI agents</a> lists them and explains the freshness data every answer carries.</p>
+<p><a href="https://github.com/Matros1975/healthuplink#connect-an-agent">More in the README</a>, including how to trust a self-signed certificate.</p>
+
+<h2 id="notices">Sync notices</h2>
+<p>The receiver can send you a message when uploads stop, through a webhook, ntfy or Telegram. A notice holds hours, counts and type names, never health values. See <a href="https://github.com/Matros1975/healthuplink#sync-notices">Sync notices</a> in the README.</p>
+
+<p class="meta">Something not working? <a href="support.html">Support</a> lists the usual reasons sync stops.</p>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<p>Not a medical device. Health Uplink copies your Apple Health data to your server; it does not interpret it.</p>
+<p><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="security.html">Security</a> · <a href="faq.html">FAQ</a> · <a href="agents.html">For AI agents</a> · <a href="https://github.com/Matros1975/healthuplink">Source code</a></p>
+<p>Apple Health and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. Claude is a trademark of Anthropic, PBC.</p>
+<p>© 2026 Frontside Solutions B.V.</p>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Health Uplink receiver. Copy .env.example to .env, fill it in, then: docker compose up -d
+services:
+  healthuplink:
+    image: ghcr.io/matros1975/healthuplink:1
+    container_name: healthuplink
+    ports:
+      - "${HU_PUBLISH_ADDR:?set HU_PUBLISH_ADDR in .env}:8796:8796"
+    volumes:
+      - healthuplink-data:/data
+      # HU_TLS=files: mount your certificate and key, then set HU_TLS_CERT=/tls/cert.pem and HU_TLS_KEY=/tls/key.pem
+      # - ./tls:/tls:ro
+    env_file: .env
+    restart: unless-stopped
+
+volumes:
+  healthuplink-data:

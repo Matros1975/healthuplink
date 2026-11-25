@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health Uplink: self-hosted Apple Health sync for AI agents</title>
+<meta name="description" content="Health Uplink sends your Apple Health data, encrypted, to a server you run, where Claude Code and other MCP clients read it. Free, with an open-source receiver.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f2b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="canonical" href="https://healthuplink.front-side-solutions.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Health Uplink">
+<meta property="og:title" content="Health Uplink: self-hosted Apple Health sync for AI agents">
+<meta property="og:description" content="Health Uplink sends your Apple Health data, encrypted, to a server you run, where Claude Code and other MCP clients read it. Free, with an open-source receiver.">
+<meta property="og:url" content="https://healthuplink.front-side-solutions.com/">
+<meta property="og:image" content="https://healthuplink.front-side-solutions.com/assets/social-1200x630.png">
+<meta property="og:image:alt" content="The Health Uplink app icon, a coral heart above a mint step on indigo, next to the name Health Uplink">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://healthuplink.front-side-solutions.com/#website",
+   "url": "https://healthuplink.front-side-solutions.com/",
+   "name": "Health Uplink",
+   "inLanguage": "en-US",
+   "publisher": {
+    "@id": "https://healthuplink.front-side-solutions.com/#organization"
+   }
+  },
+  {
+   "@type": "MobileApplication",
+   "@id": "https://healthuplink.front-side-solutions.com/#app",
+   "name": "Health Uplink",
+   "url": "https://healthuplink.front-side-solutions.com/",
+   "description": "Health Uplink is an iPhone app that sends your Apple Health data, encrypted, to a receiver you run on your own server, where Claude Code and other MCP clients read it.",
+   "operatingSystem": "iOS 17 or later",
+   "applicationCategory": "HealthApplication",
+   "isAccessibleForFree": true,
+   "publisher": {
+    "@id": "https://healthuplink.front-side-solutions.com/#organization"
+   },
+   "sameAs": [
+    "https://github.com/Matros1975/healthuplink"
+   ],
+   "image": "https://healthuplink.front-side-solutions.com/assets/social-1200x630.png"
+  },
+  {
+   "@type": "Organization",
+   "@id": "https://healthuplink.front-side-solutions.com/#organization",
+   "name": "Frontside Solutions B.V.",
+   "url": "https://front-side-solutions.com/",
+   "email": "support@front-side-solutions.com"
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="brand" href="index.html" aria-current="page"><img src="assets/favicon.svg" width="32" height="32" alt="">Health Uplink</a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a href="setup.html">Setup</a></li>
+<li><a href="agents.html">Agents</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="privacy.html">Privacy</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="wrap">
+<section class="hero">
+<img class="hero-icon" src="assets/favicon.svg" width="96" height="96" alt="Health Uplink app icon">
+<h1>Your full Apple Health history on a server you control, kept current in the background.</h1>
+<p class="lede">Health Uplink is an iPhone app that sends your Apple Health data, encrypted, to a receiver you run on your own server, where Claude Code and other MCP clients read it. One command installs the free, open-source receiver; pairing is a QR scan.</p>
+<div class="actions">
+<a class="button" href="setup.html">Set up the receiver</a>
+<a href="https://github.com/Matros1975/healthuplink">Read the source code</a>
+</div>
+<!-- App Store link: added after approval. -->
+</section>
+
+<h2>How it works</h2>
+<ol class="steps">
+<li><h3>Run the receiver</h3><p>It runs on a machine that stays on: a home server, a NAS or a small cloud machine, and keeps your data in SQLite on its own disk.</p></li>
+<li><h3>Pair your iPhone</h3><p>Scan the QR code the receiver prints. The app sends new Apple Health data whenever iOS lets it run. iOS keeps Apple Health closed while the iPhone is locked, so records from that time follow after you unlock it.</p></li>
+<li><h3>Ask your agent</h3><p>Claude Code and other MCP clients read the data through <a href="agents.html">read-only tools</a>, even while your phone is locked or offline.</p></li>
+</ol>
+
+<h2>What reaches your server</h2>
+<ul>
+<li><strong>Your whole history of daily values</strong>, such as steps, active energy and resting heart rate, back to the first day Apple Health has.</li>
+<li><strong>Sleep nights</strong> for the last 365 days on the first sync. "Resend from date" in the app sends older nights too.</li>
+<li><strong>Detailed records</strong>, such as each heart rate reading or weight entry, for the last 365 days.</li>
+<li><strong>Deletes.</strong> When you delete a record in Apple Health, the deletion reaches your server as well.</li>
+</ul>
+<p>Every answer your agent gets says when the last upload arrived, so it can tell current data from old data. Workouts, ECG recordings, State of Mind and workout routes are not sent yet.</p>
+
+<h2>What you need</h2>
+<ul>
+<li>An iPhone with iOS 17 or later.</li>
+<li>A server you run: a Docker container, or the Python package installed with <code>pipx</code>. It has to stay on, like a home server or a small cloud machine.</li>
+<li>A private way for the phone to reach it: Tailscale, or HTTPS on your home network with a certificate the receiver makes itself.</li>
+</ul>
+<p><a href="setup.html">Setup</a> walks through both.</p>
+
+<h2>Your data stays with you</h2>
+<p>Frontside Solutions, the company behind Health Uplink, runs no server for it and receives none of your health data. The app has no account, no analytics and no third-party code, and keeps no health data in iCloud. Each batch is encrypted to your receiver's key before it leaves the phone.</p>
+<p>When you ask an AI service about your data, that service sees what your agent reads to answer you, under its own terms. <a href="security.html">Security</a> explains what the encryption protects and where it stops.</p>
+
+<h2>Free and open</h2>
+<p>Health Uplink is free, with no in-app purchases. The receiver, the data contract and the code the app uses to encrypt and sign your data are open source under the Apache License 2.0.</p>
+
+<div class="note">
+<p>Works with Apple Health. Not a medical device: Health Uplink copies your data to your server and does not interpret it.</p>
+</div>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<p>Not a medical device. Health Uplink copies your Apple Health data to your server; it does not interpret it.</p>
+<p><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="security.html">Security</a> · <a href="faq.html">FAQ</a> · <a href="agents.html">For AI agents</a> · <a href="https://github.com/Matros1975/healthuplink">Source code</a></p>
+<p>Apple Health and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. Claude is a trademark of Anthropic, PBC.</p>
+<p>© 2026 Frontside Solutions B.V.</p>
+</div>
+</footer>
+</body>
+</html>

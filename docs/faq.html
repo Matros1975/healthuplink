@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health Uplink FAQ: Apple Health data on your own server</title>
+<meta name="description" content="Answers about Health Uplink: Apple Health data in Claude Code, locked iPhones, what is sent, price, privacy, and how it compares with exports and cloud apps.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f2b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="canonical" href="https://healthuplink.front-side-solutions.com/faq.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Health Uplink">
+<meta property="og:title" content="Health Uplink FAQ: Apple Health data on your own server">
+<meta property="og:description" content="Answers about Health Uplink: Apple Health data in Claude Code, locked iPhones, what is sent, price, privacy, and how it compares with exports and cloud apps.">
+<meta property="og:url" content="https://healthuplink.front-side-solutions.com/faq.html">
+<meta property="og:image" content="https://healthuplink.front-side-solutions.com/assets/social-1200x630.png">
+<meta property="og:image:alt" content="The Health Uplink app icon, a coral heart above a mint step on indigo, next to the name Health Uplink">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://healthuplink.front-side-solutions.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "FAQ",
+     "item": "https://healthuplink.front-side-solutions.com/faq.html"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "url": "https://healthuplink.front-side-solutions.com/faq.html",
+   "inLanguage": "en-US",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What is Health Uplink?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink is an iPhone app that sends your Apple Health data, encrypted, to a receiver you run on your own server, where AI agents such as Claude Code read it through MCP. It has two parts. The iPhone app reads Apple Health in the background and uploads new records. The receiver, a free open-source program for Docker or Python, stores them in SQLite on its own disk and answers agents through read-only tools. Health Uplink copies your data and does not interpret it."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where can I get the Health Uplink iPhone app?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The Health Uplink iPhone app is coming to the App Store, and this site will link to it once Apple has approved it. The receiver's source code is on GitHub, and Setup shows how to install it."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do I get Apple Health data into Claude Code?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "With Health Uplink, you run the receiver, pair your iPhone by scanning the QR code it prints, create a token for Claude Code and add the receiver's /mcp address with claude mcp add. The address is the receiver's HU_PUBLIC_URL with /mcp at the end. Other MCP clients that support streamable HTTP with a bearer token connect the same way. For AI agents has the exact command and the list of tools."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does Health Uplink work while my iPhone is locked?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "For your agents, yes: the Health Uplink receiver answers from its own copy of your data, so agents can query it while your iPhone is locked, offline or switched off. Sending works differently. iOS keeps Apple Health closed while the iPhone is locked, so records from that time reach the receiver after you unlock it. After a restart nothing is sent until the first unlock, and Low Power Mode pauses sending in the background. Every answer an agent gets says when the last upload arrived, so it can tell current data from old data."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What Apple Health data does Health Uplink send?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink sends daily values such as steps and resting heart rate for your whole history, sleep nights and detailed records from the last 365 days on the first sync, new records as Apple Health stores them, and the deletion of a single record you delete in Apple Health. \"Resend from date\" in the app sends older sleep nights too. You choose which types to allow in Apple's permission sheet, and the privacy policy lists them all. Workouts, ECG recordings, State of Mind and workout routes are not sent yet. The app does not read medications or clinical records."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is Health Uplink free and open source?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink is free, with no in-app purchases, and its receiver is open source under the Apache License 2.0. The open-source parts are the receiver, the data contract both sides follow, and the Swift package the iPhone app uses to encrypt and sign your data, so you can read the code that handles your data on its way. The source of the rest of the iPhone app is not published."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does Frontside see my health data?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Frontside Solutions, the company behind Health Uplink, never receives your health data: it runs no server for the app, and your data goes only to the receiver you pair with. The app has no account, no analytics and no third-party code, and keeps no health data in iCloud. When you ask an AI service about your data, that service sees what your agent reads to answer you, under its own terms."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How is Health Uplink different from exporting data from the Health app?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Exporting from the Health app makes a one-off archive by hand, while Health Uplink keeps a copy on your server up to date in the background and lets agents query it. The Health app's export is one large archive of XML files. For newer records you export again, and something still has to load the archive before an agent can use it. Health Uplink sends only what is new, passes on deletions, and serves the data through read-only MCP tools."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How is Health Uplink different from apps that sync to the developer's cloud?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink sends your data only to a server you run, while cloud-based apps keep a copy on servers their developer runs. With Health Uplink, your data goes from your iPhone only to your own receiver, and Frontside holds no copy. Each batch is encrypted to your receiver's key before it leaves the phone. A cloud copy has one advantage: you need no server of your own."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How is Health Uplink different from Claude's built-in Apple Health access?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Claude's built-in Apple Health access reads data inside the Claude iPhone app when a question needs it, while Health Uplink keeps a copy on your own server that Claude Code and other MCP clients can query from another machine. On 24 November 2026, Anthropic offered its Apple Health access as a read-only beta on the Pro, Max and Ultra plans, in the US only, and said it does not train on health data. Its pages did not say whether the feature works in Claude on the web, on desktop or in Claude Code. Health Uplink is not tied to one AI service or plan, but it needs a server you run."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What server do I need for Health Uplink?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink needs a machine that stays on and runs Docker, or Python 3.12 or newer, such as a home server, a NAS or a small cloud machine. The iPhone, with iOS 17 or later, also needs a private way to reach it: Tailscale, or HTTPS on your home network with a certificate the receiver makes itself. Setup covers both."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is Health Uplink a medical device?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Health Uplink is not a medical device: it copies your Apple Health data to your server and does not interpret it. It gives no medical advice, and the agent tools return your records as data without judging them."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="brand" href="index.html"><img src="assets/favicon.svg" width="32" height="32" alt="">Health Uplink</a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a href="setup.html">Setup</a></li>
+<li><a href="agents.html">Agents</a></li>
+<li><a href="faq.html" aria-current="page">FAQ</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="privacy.html">Privacy</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="wrap">
+<h1>Questions about Health Uplink</h1>
+<p class="meta">Last updated 25 November 2026</p>
+<p class="lede">Short answers about Health Uplink, the iPhone app and self-hosted receiver that keep your Apple Health data on your own server for your AI agents.</p>
+
+<h2 id="what-is-it">What is Health Uplink?</h2>
+<p>Health Uplink is an iPhone app that sends your Apple Health data, encrypted, to a receiver you run on your own server, where AI agents such as Claude Code read it through MCP.</p>
+<p>It has two parts. The iPhone app reads Apple Health in the background and uploads new records. The receiver, a free open-source program for Docker or Python, stores them in SQLite on its own disk and answers agents through read-only tools. Health Uplink copies your data and does not interpret it.</p>
+
+<h2 id="get-the-app">Where can I get the Health Uplink iPhone app?</h2>
+<p>The Health Uplink iPhone app is coming to the App Store, and this site will link to it once Apple has approved it.</p>
+<p>The receiver's source code is on <a href="https://github.com/Matros1975/healthuplink">GitHub</a>, and <a href="setup.html">Setup</a> shows how to install it.</p>
+
+<h2 id="claude-code">How do I get Apple Health data into Claude Code?</h2>
+<p>With Health Uplink, you run the receiver, pair your iPhone by scanning the QR code it prints, create a token for Claude Code and add the receiver's <code>/mcp</code> address with <code>claude mcp add</code>.</p>
+<p>The address is the receiver's <code>HU_PUBLIC_URL</code> with <code>/mcp</code> at the end. Other MCP clients that support streamable HTTP with a bearer token connect the same way. <a href="agents.html">For AI agents</a> has the exact command and the list of tools.</p>
+
+<h2 id="locked-iphone">Does Health Uplink work while my iPhone is locked?</h2>
+<p>For your agents, yes: the Health Uplink receiver answers from its own copy of your data, so agents can query it while your iPhone is locked, offline or switched off.</p>
+<p>Sending works differently. iOS keeps Apple Health closed while the iPhone is locked, so records from that time reach the receiver after you unlock it. After a restart nothing is sent until the first unlock, and Low Power Mode pauses sending in the background. Every answer an agent gets says when the last upload arrived, so it can tell current data from old data.</p>
+
+<h2 id="what-is-sent">What Apple Health data does Health Uplink send?</h2>
+<p>Health Uplink sends daily values such as steps and resting heart rate for your whole history, sleep nights and detailed records from the last 365 days on the first sync, new records as Apple Health stores them, and the deletion of a single record you delete in Apple Health.</p>
+<p>"Resend from date" in the app sends older sleep nights too. You choose which types to allow in Apple's permission sheet, and the <a href="privacy.html#what-is-sent">privacy policy</a> lists them all. Workouts, ECG recordings, State of Mind and workout routes are not sent yet. The app does not read medications or clinical records.</p>
+
+<h2 id="free-and-open-source">Is Health Uplink free and open source?</h2>
+<p>Health Uplink is free, with no in-app purchases, and its receiver is open source under the Apache License 2.0.</p>
+<p>The open-source parts are the receiver, the data contract both sides follow, and the Swift package the iPhone app uses to encrypt and sign your data, so you can read the code that handles your data on its way. The source of the rest of the iPhone app is not published.</p>
+
+<h2 id="frontside">Does Frontside see my health data?</h2>
+<p>Frontside Solutions, the company behind Health Uplink, never receives your health data: it runs no server for the app, and your data goes only to the receiver you pair with.</p>
+<p>The app has no account, no analytics and no third-party code, and keeps no health data in iCloud. When you ask an AI service about your data, that service sees what your agent reads to answer you, under its own terms.</p>
+
+<h2 id="vs-health-app-export">How is Health Uplink different from exporting data from the Health app?</h2>
+<p>Exporting from the Health app makes a one-off archive by hand, while Health Uplink keeps a copy on your server up to date in the background and lets agents query it.</p>
+<p>The Health app's export is one large archive of XML files. For newer records you export again, and something still has to load the archive before an agent can use it. Health Uplink sends only what is new, passes on deletions, and serves the data through read-only MCP tools.</p>
+
+<h2 id="vs-cloud-sync">How is Health Uplink different from apps that sync to the developer's cloud?</h2>
+<p>Health Uplink sends your data only to a server you run, while cloud-based apps keep a copy on servers their developer runs.</p>
+<p>With Health Uplink, your data goes from your iPhone only to your own receiver, and Frontside holds no copy. Each batch is encrypted to your receiver's key before it leaves the phone. A cloud copy has one advantage: you need no server of your own.</p>
+
+<h2 id="vs-claude-apple-health">How is Health Uplink different from Claude's built-in Apple Health access?</h2>
+<p>Claude's built-in Apple Health access reads data inside the Claude iPhone app when a question needs it, while Health Uplink keeps a copy on your own server that Claude Code and other MCP clients can query from another machine.</p>
+<p>On 24 November 2026, Anthropic offered its Apple Health access as a read-only beta on the Pro, Max and Ultra plans, in the US only, and said it does not train on health data. Its pages did not say whether the feature works in Claude on the web, on desktop or in Claude Code. Health Uplink is not tied to one AI service or plan, but it needs a server you run.</p>
+
+<h2 id="server">What server do I need for Health Uplink?</h2>
+<p>Health Uplink needs a machine that stays on and runs Docker, or Python 3.12 or newer, such as a home server, a NAS or a small cloud machine.</p>
+<p>The iPhone, with iOS 17 or later, also needs a private way to reach it: Tailscale, or HTTPS on your home network with a certificate the receiver makes itself. <a href="setup.html">Setup</a> covers both.</p>
+
+<h2 id="medical-device">Is Health Uplink a medical device?</h2>
+<p>Health Uplink is not a medical device: it copies your Apple Health data to your server and does not interpret it.</p>
+<p>It gives no medical advice, and the agent tools return your records as data without judging them.</p>
+
+<p class="meta">Another question? E-mail <a href="mailto:support@front-side-solutions.com?subject=Health%20Uplink">support@front-side-solutions.com</a> or see <a href="support.html">Support</a>.</p>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<p>Not a medical device. Health Uplink copies your Apple Health data to your server; it does not interpret it.</p>
+<p><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="security.html">Security</a> · <a href="faq.html">FAQ</a> · <a href="agents.html">For AI agents</a> · <a href="https://github.com/Matros1975/healthuplink">Source code</a></p>
+<p>Apple Health and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. Claude is a trademark of Anthropic, PBC.</p>
+<p>© 2026 Frontside Solutions B.V.</p>
+</div>
+</footer>
+</body>
+</html>

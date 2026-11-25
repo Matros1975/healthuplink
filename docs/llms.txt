@@ -1,0 +1,19 @@
+# Health Uplink
+
+> Health Uplink is an iPhone app that sends Apple Health data, encrypted, to a receiver the user runs on their own server, where AI agents such as Claude Code read it through read-only MCP tools.
+
+The receiver is free and open source under the Apache License 2.0 and runs in Docker or as a Python package. It keeps the data in SQLite and answers agents even while the iPhone is locked; every answer says when the last upload arrived. Frontside Solutions B.V., the company behind Health Uplink, runs no server for it and receives no health data. Health Uplink is not a medical device: it copies data and does not interpret it. The iPhone app is coming to the App Store.
+
+## Docs
+
+- [Home](https://healthuplink.front-side-solutions.com/): what Health Uplink does, what reaches your server and what you need
+- [For AI agents](https://healthuplink.front-side-solutions.com/agents.html): the MCP endpoint, the six read-only tools, the Claude Code command and the freshness data in every answer
+- [FAQ](https://healthuplink.front-side-solutions.com/faq.html): locked iPhones, what is sent, price and licence, privacy, and how Health Uplink differs from other ways to get Apple Health data to an AI agent
+- [Setup](https://healthuplink.front-side-solutions.com/setup.html): install the receiver with Docker or pipx, pair the iPhone by QR code, connect an agent
+- [Security](https://healthuplink.front-side-solutions.com/security.html): what the encryption protects and where it stops
+
+## Optional
+
+- [Support](https://healthuplink.front-side-solutions.com/support.html): why sync stops and how to contact support
+- [Privacy policy](https://healthuplink.front-side-solutions.com/privacy.html): what the app sends, where, and what Frontside processes
+- [Source code](https://github.com/Matros1975/healthuplink): receiver, data contract and the Swift encryption package

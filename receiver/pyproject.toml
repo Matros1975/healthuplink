@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "healthuplink"
+version = "1.0.0"
+description = "Self-hosted receiver for Health Uplink: keeps the Apple Health data your iPhone sends and serves it to AI agents over MCP"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: POSIX",
+]
+# Floors only; requirements.lock pins the exact versions the image and CI install.
+dependencies = [
+    "cryptography>=50.0.2",
+    "mcp>=2.3.0",
+    "uvicorn>=0.54.0",
+    "segno>=1.6.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.2.0", "httpx>=0.28.1"]
+
+[project.urls]
+Homepage = "https://healthuplink.front-side-solutions.com/"
+Source = "https://github.com/Matros1975/healthuplink"
+
+[project.scripts]
+healthuplink = "healthuplink.cli:run"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+healthuplink = ["data/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

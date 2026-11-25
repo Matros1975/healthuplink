@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security: how Health Uplink encrypts Apple Health data</title>
+<meta name="description" content="How Health Uplink protects Apple Health data on its way to your server: Tailscale or pinned TLS, encrypted and signed batches, and what it does not protect.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f2b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="canonical" href="https://healthuplink.front-side-solutions.com/security.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Health Uplink">
+<meta property="og:title" content="Security: how Health Uplink encrypts Apple Health data">
+<meta property="og:description" content="How Health Uplink protects Apple Health data on its way to your server: Tailscale or pinned TLS, encrypted and signed batches, and what it does not protect.">
+<meta property="og:url" content="https://healthuplink.front-side-solutions.com/security.html">
+<meta property="og:image" content="https://healthuplink.front-side-solutions.com/assets/social-1200x630.png">
+<meta property="og:image:alt" content="The Health Uplink app icon, a coral heart above a mint step on indigo, next to the name Health Uplink">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://healthuplink.front-side-solutions.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Security",
+     "item": "https://healthuplink.front-side-solutions.com/security.html"
+    }
+   ]
+  },
+  {
+   "@type": "TechArticle",
+   "headline": "Health Uplink security: what protects your data and where it stops",
+   "description": "How Health Uplink protects Apple Health data on its way to your server: Tailscale or pinned TLS, encrypted and signed batches, and what it does not protect.",
+   "url": "https://healthuplink.front-side-solutions.com/security.html",
+   "mainEntityOfPage": "https://healthuplink.front-side-solutions.com/security.html",
+   "inLanguage": "en-US",
+   "dateModified": "2026-11-25",
+   "image": "https://healthuplink.front-side-solutions.com/assets/social-1200x630.png",
+   "author": {
+    "@type": "Organization",
+    "name": "Frontside Solutions B.V.",
+    "url": "https://front-side-solutions.com/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Frontside Solutions B.V.",
+    "url": "https://front-side-solutions.com/"
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="brand" href="index.html"><img src="assets/favicon.svg" width="32" height="32" alt="">Health Uplink</a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a href="setup.html">Setup</a></li>
+<li><a href="agents.html">Agents</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="security.html" aria-current="page">Security</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="privacy.html">Privacy</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="wrap">
+<h1>Security</h1>
+<p class="meta">Last updated 25 November 2026</p>
+
+<p>Health Uplink sends your Apple Health data from your iPhone to a receiver you run yourself. This page explains what protects that data on the way and where that protection ends, so you can judge the risk yourself. Not a medical device.</p>
+
+<h2>What there is to protect</h2>
+<ul>
+  <li><strong>Your health data</strong>: on the iPhone, in the phone's upload queue, on the network, and in the receiver's store and backups.</li>
+  <li><strong>The device signing key</strong>: an Ed25519 key the app creates at pairing. It stays in the iPhone's Keychain on that device only and signs every batch and request.</li>
+  <li><strong>The receiver's encryption key</strong>: an X25519 key in the receiver's data folder. The phone encrypts every batch to it.</li>
+  <li><strong>MCP tokens</strong>: each agent's bearer token. The receiver stores only their SHA-256 hashes.</li>
+  <li><strong>The pair token</strong>: a random 128-bit value in the QR code. It works once and expires after 10 minutes.</li>
+</ul>
+
+<h2>Protecting the link</h2>
+<p>Every connection from the phone to the receiver is encrypted and tied to the right server, in one of two ways:</p>
+<ul>
+  <li><strong>Tailscale (WireGuard).</strong> Plain <code>http://</code> is accepted only for addresses in the tailnet range <code>100.64.0.0/10</code>, where WireGuard already encrypts the traffic and authenticates both ends. The app refuses plain HTTP to any other address, and the receiver's <code>pair</code> command refuses to print such a code.</li>
+  <li><strong>TLS.</strong> Every other receiver needs <code>https://</code>. The certificate is either valid under the iPhone's normal trust store, or self-signed and pinned: the QR code carries the SHA-256 hash of the certificate's public key, and the app accepts no other key for that receiver. It never falls back to normal certificate checks or to HTTP. Pinning works only for IPv4 addresses, <code>.local</code> names and names without a dot, because iOS does not let an app replace normal certificate checks for an internet domain name; a receiver behind an internet name needs a certificate from a public certificate authority.</li>
+</ul>
+<p>The pair token travels only over that protected link. If the receiver's certificate key changes, the app stops sending, keeps the data queued and says "Another device answered at …". It never pairs again by itself; you scan a new code.</p>
+
+<h2>What the batch encryption adds</h2>
+<p>On top of the link, the phone encrypts each batch with HPKE (X25519, HKDF-SHA256, ChaCha20-Poly1305) to the receiver's key, and signs it with the device key. Over a direct Tailscale link or a pinned TLS link, which already encrypt and authenticate, this adds little. It matters in three places:</p>
+<ul>
+  <li><strong>Anything that ends TLS before the receiver.</strong> If you put a reverse proxy or a tunnel service in front of the receiver, the proxy sees the HTTP traffic, but the batches stay encrypted until the receiver opens them.</li>
+  <li><strong>The queue on the phone.</strong> Batches wait in the app's outbox until they are delivered, sometimes for days. The outbox holds the batches only in encrypted form, and the app itself cannot open them again; only the receiver's key can. Next to each batch the app keeps its dates, type names and record count for the Sync activity screen, but no health values.</li>
+  <li><strong>Forged or replayed batches.</strong> The batch ID, sequence number, device ID and key epoch are bound into the encryption as associated data and into the Ed25519 signature. The receiver accepts only batches signed by a paired device. A copied batch cannot be sent again under another batch ID, sequence number or device, and a batch received twice is stored once.</li>
+</ul>
+
+<h2>What it does not protect</h2>
+<ul>
+  <li><strong>The receiver itself.</strong> Whoever controls the receiver's machine, or gets a copy of its Docker volume or backups, can read everything: the store is not encrypted at rest, and the receiver's key sits in the same volume. Protect that machine and its disks as you would the data.</li>
+  <li><strong>MCP tokens.</strong> Anyone holding a token can read everything the MCP tools return, which is all your synced data. Give each agent its own token and revoke tokens you no longer use.</li>
+  <li><strong>AI providers.</strong> When an agent reads your data through MCP, the data goes into that agent's conversation. If the agent runs on a hosted model, the model provider sees what the agent reads, under that provider's terms.</li>
+  <li><strong>A stolen receiver key.</strong> The receiver's key does not change with each batch. Someone who has recorded encrypted batches and later steals the key can open every batch sealed to that key. <code>healthuplink keys rotate</code> starts a new key; the old one is deleted about 30 days later, which limits how far back such a theft reaches.</li>
+  <li><strong>Traffic analysis.</strong> Someone watching the network sees when the phone uploads and roughly how much, though not what.</li>
+  <li id="qr-screen"><strong>A QR code on a compromised screen.</strong> The QR code decides which server the phone trusts. If the screen showing it is controlled by an attacker, the code can carry another server's address, key and pin, and the phone will send to that server.</li>
+  <li><strong>The iPhone.</strong> The app reads Apple Health on the phone; anyone who controls the unlocked phone can read the same data there.</li>
+</ul>
+
+<h2>What Frontside does not do</h2>
+<p>Frontside Solutions runs no server for Health Uplink and receives none of your data. The app has no analytics, no crash reporter and no third-party code, and does not store health data in iCloud. Your data goes from your phone to your receiver and nowhere else, unless you connect an agent that sends it on.</p>
+
+<h2>How to check</h2>
+<ul>
+  <li>The receiver in this repository is the code that runs on your server; read it, or build the image yourself from <code>receiver/Dockerfile</code>.</li>
+  <li><code>swift/HealthUplinkSeal</code> is the package the iPhone app compiles for sealing, signing and pinning. It is the same code, not a copy.</li>
+  <li><code>contract/SPEC.md</code> describes every message, and <code>contract/vectors/</code> holds test vectors that both the receiver and the Swift package must pass, so each side can be tested against the other.</li>
+</ul>
+
+<p>To report a vulnerability, see <a href="https://github.com/Matros1975/healthuplink/security/policy">SECURITY.md</a> or e-mail support@front-side-solutions.com with "SECURITY" in the subject.</p>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<p>Not a medical device. Health Uplink copies your Apple Health data to your server; it does not interpret it.</p>
+<p><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="security.html">Security</a> · <a href="faq.html">FAQ</a> · <a href="agents.html">For AI agents</a> · <a href="https://github.com/Matros1975/healthuplink">Source code</a></p>
+<p>Apple Health and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. Claude is a trademark of Anthropic, PBC.</p>
+<p>© 2026 Frontside Solutions B.V.</p>
+</div>
+</footer>
+</body>
+</html>

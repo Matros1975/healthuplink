@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support: why Apple Health sync stops – Health Uplink</title>
+<meta name="description" content="Health Uplink support: why Apple Health sync stops and what to do, how to send the sync log, and how to unpair and delete data. E-mail or GitHub issues.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f6f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0f2b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="canonical" href="https://healthuplink.front-side-solutions.com/support.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Health Uplink">
+<meta property="og:title" content="Support: why Apple Health sync stops – Health Uplink">
+<meta property="og:description" content="Health Uplink support: why Apple Health sync stops and what to do, how to send the sync log, and how to unpair and delete data. E-mail or GitHub issues.">
+<meta property="og:url" content="https://healthuplink.front-side-solutions.com/support.html">
+<meta property="og:image" content="https://healthuplink.front-side-solutions.com/assets/social-1200x630.png">
+<meta property="og:image:alt" content="The Health Uplink app icon, a coral heart above a mint step on indigo, next to the name Health Uplink">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/site.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://healthuplink.front-side-solutions.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Support",
+     "item": "https://healthuplink.front-side-solutions.com/support.html"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+<div class="wrap">
+<a class="brand" href="index.html"><img src="assets/favicon.svg" width="32" height="32" alt="">Health Uplink</a>
+<nav class="site-nav" aria-label="Site">
+<ul>
+<li><a href="setup.html">Setup</a></li>
+<li><a href="agents.html">Agents</a></li>
+<li><a href="faq.html">FAQ</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="support.html" aria-current="page">Support</a></li>
+<li><a href="privacy.html">Privacy</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main" class="wrap">
+<h1>Support</h1>
+<p class="lede">E-mail <a href="mailto:support@front-side-solutions.com?subject=Health%20Uplink">support@front-side-solutions.com</a> or <a href="https://github.com/Matros1975/healthuplink/issues">open an issue on GitHub</a>. Please don't put health data in either.</p>
+
+<h2 id="why-sync-stops">Why sync stops</h2>
+<p>The Status screen in the app names the cause. These are the usual ones, with what the app says and what to do.</p>
+<dl>
+<dt>The iPhone was locked</dt>
+<dd>"iPhone was locked." iOS keeps Apple Health data closed while the phone is locked, for example overnight. Sync continues after you unlock it. After a restart, nothing syncs until the first unlock.</dd>
+
+<dt>Low Power Mode is on</dt>
+<dd>"Low Power Mode pauses background sync." iOS stops background work in Low Power Mode. Open the app or tap Sync now, or turn Low Power Mode off.</dd>
+
+<dt>Background App Refresh is off</dt>
+<dd>"Background App Refresh is off for Health Uplink." Turn it on in Settings &gt; General &gt; Background App Refresh. The Status screen has an Open Settings button.</dd>
+
+<dt>Local Network access is off</dt>
+<dd>On a home network setup, the app needs Local Network access to reach the receiver. If you declined it, Status says "Receiver not reachable". Turn it on in Settings &gt; Privacy &amp; Security &gt; Local Network.</dd>
+
+<dt>The app was force-quit</dt>
+<dd>If you swipe Health Uplink away in the app switcher, iOS does not start it in the background again until you open it yourself. Open it once and leave it in the app switcher.</dd>
+
+<dt>The receiver is not reachable</dt>
+<dd>"Receiver not reachable. Check that your server is on and this iPhone is on the same network." Check that the server is on and the receiver runs: <code>docker compose ps</code> and <code>docker compose logs healthuplink</code>.</dd>
+
+<dt>Tailscale (the VPN) is off</dt>
+<dd>"Receiver not reachable. Check that Tailscale is on." Turn Tailscale on in its app on the iPhone, and check that it runs on the server too.</dd>
+
+<dt>The outbox is full</dt>
+<dd>"Reading paused: … waiting to upload. Nothing is lost." The app stops reading new data while too much waits to be sent. It continues once the receiver can be reached again.</dd>
+
+<dt>The pairing no longer works</dt>
+<dd>"The receiver no longer accepts this iPhone. Pair again." This happens when the device was revoked on the receiver or the receiver's data was deleted. Run <code>pair</code> on the receiver and tap Pair again in the app.</dd>
+
+<dt>Another device answered</dt>
+<dd>"Another device answered at …" The receiver's certificate key is not the one in the QR code, for example because its Docker volume was replaced, or because another machine now uses its address. The app keeps your data queued and never pairs again by itself. If it is your receiver, scan a new code with Pair again with this receiver.</dd>
+
+<dt>Batches were not accepted</dt>
+<dd>"… batches were not accepted by the receiver." After you fix the cause (often an outdated app or receiver), use Resend from date in the app to send that period again.</dd>
+</dl>
+
+<h2 id="sync-log">Sending the sync log</h2>
+<p>On the Status screen, under Tools, tap Export sync log and attach the file to your e-mail. The log holds times, counts, error codes, batch numbers, type names and the start times of the periods the app read. It holds no health values, units or source names.</p>
+
+<h2 id="unpair">Unpairing and deleting</h2>
+<ul>
+<li><strong>On the iPhone:</strong> Status &gt; Pairing &gt; Unpair and delete local data. This deletes the pairing, this iPhone's key, the data waiting to be sent, the list of batches not accepted and the sync log. Data already on the receiver stays there.</li>
+<li><strong>Stop sending without the phone:</strong> on the receiver, <code>healthuplink devices list</code> and <code>healthuplink devices revoke &lt;device_id&gt;</code>.</li>
+<li><strong>Delete everything on the receiver:</strong> <code>docker compose down -v</code> removes the container and its volume with the store, backups and keys. Without Docker, delete its data folder. Backups you copied elsewhere you delete yourself.</li>
+<li><strong>Stop Health access:</strong> Settings &gt; Health &gt; Data Access &amp; Devices &gt; Health Uplink.</li>
+</ul>
+<p>Frontside has none of your health data, so there is nothing to delete on our side. See <a href="privacy.html">Privacy</a>.</p>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<p>Not a medical device. Health Uplink copies your Apple Health data to your server; it does not interpret it.</p>
+<p><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="security.html">Security</a> · <a href="faq.html">FAQ</a> · <a href="agents.html">For AI agents</a> · <a href="https://github.com/Matros1975/healthuplink">Source code</a></p>
+<p>Apple Health and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries. Claude is a trademark of Anthropic, PBC.</p>
+<p>© 2026 Frontside Solutions B.V.</p>
+</div>
+</footer>
+</body>
+</html>

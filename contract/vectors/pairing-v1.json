@@ -1,0 +1,192 @@
+{
+  "cases": [
+    {
+      "name": "http_tailnet",
+      "url": "http://100.100.1.1:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "ok"
+    },
+    {
+      "name": "http_tailnet_lowest",
+      "url": "http://100.64.0.1",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://100.64.0.1\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "ok",
+      "note": "first address of 100.64.0.0/10, no port"
+    },
+    {
+      "name": "http_above_tailnet",
+      "url": "http://100.128.0.1",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://100.128.0.1\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https",
+      "note": "first address after 100.64.0.0/10"
+    },
+    {
+      "name": "http_lan_ip",
+      "url": "http://192.168.1.10:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https"
+    },
+    {
+      "name": "http_local_name",
+      "url": "http://mac.local:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://mac.local:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https"
+    },
+    {
+      "name": "http_unqualified_name",
+      "url": "http://mac:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://mac:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https",
+      "note": "only tailnet IPv4 literals may use http"
+    },
+    {
+      "name": "http_ipv6_tailnet",
+      "url": "http://[fd7a:115c:a1e0::1]:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://[fd7a:115c:a1e0::1]:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https",
+      "note": "Tailscale's IPv6 range does not count: plain http is allowed for IPv4 literals in 100.64.0.0/10 only"
+    },
+    {
+      "name": "http_leading_zero",
+      "url": "http://0100.100.1.1",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://0100.100.1.1\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "needs_https",
+      "note": "an octet with a leading zero is not a dotted-quad literal"
+    },
+    {
+      "name": "https_local_name_pin",
+      "url": "https://mac.local:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://mac.local:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "ok"
+    },
+    {
+      "name": "https_lan_ip_pin",
+      "url": "https://192.168.1.10:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "ok"
+    },
+    {
+      "name": "https_tailnet_pin",
+      "url": "https://100.100.1.1:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "ok"
+    },
+    {
+      "name": "https_unqualified_name_pin",
+      "url": "https://mac:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://mac:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "ok",
+      "note": "an unqualified name (no dot) counts as a local name, so a pin is allowed"
+    },
+    {
+      "name": "https_lan_ip_no_pin",
+      "url": "https://192.168.1.10:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "ok",
+      "note": "https without a pin needs a CA-valid certificate at connect time"
+    },
+    {
+      "name": "https_public_name_no_pin",
+      "url": "https://health.example.com",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://health.example.com\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "ok"
+    },
+    {
+      "name": "https_public_name_pin",
+      "url": "https://health.example.com",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://health.example.com\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "pin_needs_local_host",
+      "note": "iOS does not let an app loosen server trust for a public DNS name; use a CA-valid certificate and no pin"
+    },
+    {
+      "name": "https_ipv6_pin",
+      "url": "https://[fd00::10]:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://[fd00::10]:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "pin_needs_local_host",
+      "note": "in v1 the IP literals that may carry a pin are IPv4 dotted quads only; an IPv6 literal with a pin is refused like a public name"
+    },
+    {
+      "name": "http_tailnet_pin",
+      "url": "http://100.100.1.1:8796",
+      "tls_sha256": "JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"JCVEoBlmTiX+UmBmVWY/0y4wTB+ZiJX+XcsaLJFls54=\"}",
+      "expect": "needs_https",
+      "note": "a pin requires https, even on the tailnet"
+    },
+    {
+      "name": "https_tailnet_name",
+      "url": "https://x.tail1234.ts.net",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://x.tail1234.ts.net\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "tailnet_name",
+      "note": "the iPhone cannot resolve *.ts.net"
+    },
+    {
+      "name": "http_tailnet_name",
+      "url": "http://x.tail1234.ts.net",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://x.tail1234.ts.net\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "tailnet_name",
+      "note": "two faults (a *.ts.net name and plain http): the name is checked first, since the iPhone cannot resolve it either way"
+    },
+    {
+      "name": "pin_31_bytes",
+      "url": "https://192.168.1.10:8796",
+      "tls_sha256": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHg==",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHg==\"}",
+      "expect": "bad_pin"
+    },
+    {
+      "name": "pin_not_base64",
+      "url": "https://192.168.1.10:8796",
+      "tls_sha256": "not base64!",
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": \"not base64!\"}",
+      "expect": "bad_pin"
+    },
+    {
+      "name": "pin_number",
+      "url": "https://192.168.1.10:8796",
+      "tls_sha256": 12345,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"https://192.168.1.10:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\", \"tls_sha256\": 12345}",
+      "expect": "bad_pin",
+      "note": "tls_sha256 is a JSON number, not a string"
+    },
+    {
+      "name": "version_2",
+      "url": "http://100.100.1.1:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 2, \"mode\": \"direct\", \"url\": \"http://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "unsupported_version"
+    },
+    {
+      "name": "mode_mailbox",
+      "url": "http://100.100.1.1:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"mailbox\", \"url\": \"http://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1, \"pair_token\": \"YWJjZGVmZ2hpamtsbW5vcA==\"}",
+      "expect": "unsupported_mode"
+    },
+    {
+      "name": "missing_pair_token",
+      "url": "http://100.100.1.1:8796",
+      "tls_sha256": null,
+      "payload": "{\"v\": 1, \"mode\": \"direct\", \"url\": \"http://100.100.1.1:8796\", \"server_pk\": \"B6N8vBQgk8i3VdwbEOhstCY3StFqqFPtC9/AsrhtHHw=\", \"key_epoch\": 1}",
+      "expect": "bad_payload"
+    }
+  ]
+}
